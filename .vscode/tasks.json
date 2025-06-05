@@ -1,0 +1,26 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build C program",
+            "type": "shell",
+            "command": "gcc",
+            "args": [
+                "-g",
+                "-O0",
+                "main.c",
+                "uart.c",
+                "tools.c",
+                "-o",
+                "main"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
+        }
+    ]
+}

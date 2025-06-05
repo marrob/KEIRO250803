@@ -1,0 +1,51 @@
+# Compiled object files
+*.o
+*.obj
+
+# Executable binaries and firmware outputs
+*.elf
+*.out
+*.hex
+*.bin
+*.map
+
+# Compilation logs
+*.log
+
+# Make and CMake build files
+Makefile
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+
+# General build directories
+build/
+build-*/
+
+# Editor and IDE folders/files
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+*.swp
+*~
+
+# Debug and toolchain intermediate files
+*.d
+*.lst
+*.sym
+
+# Backup and temporary files
+*.bak
+*.old
+*.orig
+
+# Common output directories
+/output/
+/dist/
+/bin/
+/obj/
+
+# OS-generated junk files
+.DS_Store
+Thumbs.db
