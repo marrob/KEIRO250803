@@ -18,6 +18,9 @@
 // Add hozzá a felhasználódat a dialout csoporthoz:
 // sudo usermod -a -G dialout marrob
 
+
+
+
 // canonical módban:
 // read() csak akkor tér vissza, ha a sor teljes, azaz záró karaktert (pl. Enter-\n) kapott.
 // portname:"/dev/ttyS0"
@@ -26,8 +29,8 @@ int UART_Open(const char *portname, speed_t baudrate)
 {
     int huart = open(portname, O_RDWR | O_NOCTTY | O_SYNC);
     if (huart < 0) {
-        perror("Nem tudtam megnyitni a soros portot");
-        return 1;
+        perror("Serial Port can't open");
+        return -1;
     }
 
     // Soros port beállítása
@@ -35,9 +38,9 @@ int UART_Open(const char *portname, speed_t baudrate)
     memset(&tty, 0, sizeof tty);
 
     if (tcgetattr(huart, &tty) != 0) {
-        perror("tcgetattr hiba");
+        perror("tcgetattr error");
         close(huart);
-        return 1;
+        return -1;
     }
 
     // Baudrate beállítás (pl. 9600 baud)
@@ -63,7 +66,7 @@ int UART_Open(const char *portname, speed_t baudrate)
     tty.c_cc[VTIME] = 1;     // 0.1sec resolution Timeout, csak non-canonical módban
 
     if (tcsetattr(huart, TCSANOW, &tty) != 0) {
-        perror("tcsetattr hiba");
+        perror("tcsetattr error");
         close(huart);
         return -1;
     }
@@ -121,7 +124,7 @@ int UART_Read(int huart, char *buffer, size_t size, char termination, int timeou
 
         if(get_timestamp_ms() - start >  timeout_ms){
             buffer[i] = '\0'; // close the string
-            fprintf(stderr,"UART_extRead timeout\n");
+            fprintf(stderr,"UART_Read timeout error.\n");
             return -3;
         }
     }

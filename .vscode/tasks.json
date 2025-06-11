@@ -9,10 +9,33 @@
                 "-g",
                 "-O0",
                 "main.c",
+        		"task.c",
                 "uart.c",
                 "tools.c",
                 "-o",
                 "main"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
+        }, 
+        {
+            "label": "Build C Sevice",
+            "type": "shell",
+            "command": "gcc",
+            "args": [
+                "-g",
+                "-O0",
+                "main_service.c",
+        		"task.c",
+                "uart.c",
+                "tools.c",
+                "-o",
+                "MRPI250610"
             ],
             "group": {
                 "kind": "build",
