@@ -47,7 +47,7 @@ sudo chmod +x "$BINARY_TARGET"
 # Group=nogroup
 
 # --- Elérhető UART ---
-#  dmesg | grep tty
+# dmesg | grep tty
 # Ez megmutatja, hogy mely soros eszközök jelentek meg, pl: ttyUSB0
 
 # --- UART jogosultság használata ---

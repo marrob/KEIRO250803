@@ -2,7 +2,18 @@
 #define  __MAIN_H
 
 #define UART_BUFFER_SIZE 128
-#define UART_NAME "/dev/ttyUSB0"
+
+
+// --- Rasberry Pi 4 Model B ---
+// serial0 = ttyAMA1
+// Ez van kivezetve a GPIO 14 (TX) es GPIO 15 (RX) labakra
+// Ezert /dev/ttyAMA1 a hasznalhato UART a GPIO-n keresztal
+
+// USB to Serial adapter on Ubuntu 20.04
+// #define UART_NAME "/dev/ttyUSB0"
+
+// GPIO 14/15
+#define UART_NAME "/dev/serial0"
 
 #define SERVICE_NAME "MRPI250610"
 #define ERROR_CODE_COM_PORT_CANT_OPEN -2 

@@ -20,7 +20,6 @@
 
 
 
-
 // canonical módban:
 // read() csak akkor tér vissza, ha a sor teljes, azaz záró karaktert (pl. Enter-\n) kapott.
 // portname:"/dev/ttyS0"
