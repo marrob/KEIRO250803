@@ -24,5 +24,7 @@ int main(void)
 
   syslog(LOG_INFO, "%s fake service stopped...", SERVICE_NAME);
   closelog();
+  Task_Close();
+  
   return 0;
 }

@@ -6,13 +6,17 @@
 # systemctl status MRPI250610.service 
 # pstree | grep mydaemon
 
-
 # --- Stop & Disable & Remove service ----
-# Lelltija:                      systemctl stop MRPI250610.service
-# Kvetekzo bootkor nem indul el: systemctl disable MRPI250610.service
+# systemctl stop MRPI250610.service
+# systemctl disable MRPI250610.service
 # rm /etc/systemd/system/MRPI250610.service
 # rm /usr/local/bin/MRPI250610
+# systemctl restart MRPI250610.service 
 
+# --- RPI 4B az albbiak kikapcsoljk a consolt ---
+# systemctl stop serial-getty@ttyS0.service
+# systemctl disable serial-getty@ttyS0.service
+# sudo systemctl mask serial-getty@ttyS0.service
 
 # --- syslog ---
 # 
@@ -21,7 +25,7 @@
 # -f: real-time 
 # -u: filter 
 # journalctl -u MRPI250610 -f
-# journalctl -f | grep "MRPI250610"
+# journalctl -f | grep MRPI250610
 
 echo "Service Install Started..."
 

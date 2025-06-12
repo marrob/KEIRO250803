@@ -23,5 +23,6 @@
 
 int Task_Init(void);
 int Task_Run(void);
+void Task_Close(void);
 
 #endif

@@ -24,7 +24,7 @@ int Task_Init(void)
 
   timestamp = HAL_GetTick();
   downcounter = 5;
-  huart = UART_Open(UartName, B115200);
+  huart = UART_Open(UartName, B115200 /*B9600*/);
 
   if(huart == -1)
   {
@@ -60,4 +60,10 @@ int Task_Run(void)
   }
 
   return downcounter;
+}
+
+
+void Task_Close(void)
+{
+   close(huart);
 }

@@ -67,6 +67,7 @@ int main() {
             break;
     }
 
+    Task_Close();
     // A ciklusból való kilépés után
     syslog(LOG_INFO, "%s service is stopped...", SERVICE_NAME);
     closelog(); // Ne felejtsd el lezárni a syslog kapcsolatot
