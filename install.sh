@@ -7,9 +7,9 @@
 # pstree | grep mydaemon
 
 
-# --- Stop & Remove service ----
-# systemctl stop MRPI250610.service
-# cd /etc/systemd/system/
+# --- Stop & Disable & Remove service ----
+# Lelltija:                      systemctl stop MRPI250610.service
+# Kvetekzo bootkor nem indul el: systemctl disable MRPI250610.service
 # rm /etc/systemd/system/MRPI250610.service
 # rm /usr/local/bin/MRPI250610
 
