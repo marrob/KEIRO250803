@@ -1,18 +1,18 @@
 #!/bin/bash
 
 # 1. Modify cmdline.txt - remove serial console output
-echo "[1/4] Modifying cmdline.txt..."
-sudo sed -i 's/console=serial0,[0-9]* *//g' /boot/firmware/cmdline.txt
+#echo "[1/4] Modifying cmdline.txt..."
+#sudo sed -i 's/console=serial0,[0-9]* *//g' /boot/firmware/cmdline.txt
 
 # 2. Modify config.txt - ensure UART is enabled
-echo "[2/4] Setting enable_uart=1 in config.txt..."
-if grep -q "^enable_uart=" /boot/firmware/config.txt; then
-    # Replace existing line
-    sudo sed -i 's/^enable_uart=.*/enable_uart=1/' /boot/firmware/config.txt
-else
+#echo "[2/4] Setting enable_uart=1 in config.txt..."
+#if grep -q "^enable_uart=" /boot/firmware/config.txt; then
+#    # Replace existing line
+#    sudo sed -i 's/^enable_uart=.*/enable_uart=1/' /boot/firmware/config.txt
+#else
     # Add it if not present
-    echo "enable_uart=1" | sudo tee -a /boot/firmware/config.txt >/dev/null
-fi
+#    echo "enable_uart=1" | sudo tee -a /boot/firmware/config.txt >/dev/null
+#fi
 
 # 3. Disable serial-getty services - prevent login shell on UART
 echo "[3/4] Disabling and stopping serial-getty services..."

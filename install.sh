@@ -52,6 +52,7 @@ sudo chmod +x "$BINARY_TARGET"
 
 # --- Elérhető UART ---
 # dmesg | grep tty
+# ls -l /dev/serial*
 # Ez megmutatja, hogy mely soros eszközök jelentek meg, pl: ttyUSB0
 
 # --- UART jogosultság használata ---
@@ -83,7 +84,8 @@ echo "⚙️ Systemd service fájl létrehozása: $SERVICE_FILE"
 sudo bash -c "cat > $SERVICE_FILE" <<EOF
 [Unit]
 Description=$BINARY_TARGET service for proper shutdown...
-After=network.target
+After=network-online.target syslog.target
+Wants=network-online.target
 
 [Service]
 Type=forking
