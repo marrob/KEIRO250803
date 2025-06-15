@@ -1,8 +1,8 @@
 {
     "version": "2.0.0",
     "tasks": [
-        {
-            "label": "Build C program",
+                {
+            "label": "Build C program 64bit",
             "type": "shell",
             "command": "gcc",
             "args": [
@@ -24,9 +24,53 @@
             ]
         }, 
         {
-            "label": "Build C Sevice",
+            "label": "Build C Sevice 64bit",
             "type": "shell",
             "command": "gcc",
+            "args": [
+                "-g",
+                "-O0",
+                "main_service.c",
+        		"task.c",
+                "uart.c",
+                "tools.c",
+                "-o",
+                "MRPI250610"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
+            "label": "Build C program 64bit->32bit",
+            "type": "shell",
+            "command": "arm-linux-gnueabihf-gcc",
+            "args": [
+                "-g",
+                "-O0",
+                "main.c",
+        		"task.c",
+                "uart.c",
+                "tools.c",
+                "-o",
+                "main"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
+        }, 
+        {
+            "label": "Build C Sevice - 64bit->32bit",
+            "type": "shell",
+            "command": "arm-linux-gnueabihf-gcc",
             "args": [
                 "-g",
                 "-O0",
