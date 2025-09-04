@@ -55,10 +55,10 @@ int UART_Open(const char *portname, speed_t baudrate)
 
     tty.c_lflag &= ~(ICANON | ECHO | ECHOE | ISIG);  // nyers mód (canonical mód kikapcsolása)
 
-    //tty.c_lflag |= ICANON ;                           // canonical mód, a read()read Enter \n-ig olvas!!!!
-    //tty.c_lflag &= ~(ECHO | ECHOE | ISIG);            // canonical mód, a read()read Enter \n-ig olvas!!!!
+    //tty.c_lflag |= ICANON ;                         // canonical mód, a read()read Enter \n-ig olvas!!!!
+    //tty.c_lflag &= ~(ECHO | ECHOE | ISIG);          // canonical mód, a read()read Enter \n-ig olvas!!!!
     tty.c_iflag &= ~(IXON | IXOFF | IXANY);           // szoftveres flow control kikapcsolása
-    tty.c_oflag &= ~OPOST;                            // nyers kimenet
+    tty.c_oflag &= ~OPOST;                            // kikapcsolja a kimeneti posztprocesszlast, tehat nem fogja peldaul a '\n' karaktert automatikusan '\r\n'-re cserelni.
 
     // VMIN és VTIME beállítása (olvasási timeout)
     tty.c_cc[VMIN] = 0;      // minimum 0 karakter várakozás
@@ -92,8 +92,9 @@ static long get_timestamp_ms(void)
     return timestamp_ms;
 }
 /*
-termination: '\n' in Linux syststems
-timeout_ms: eg 1000ms
+- termination: '\n' in Linux syststems
+- timeout_ms: eg 1000ms
+- hiába küld az eszköz \r zárókaraktert valami kicseréli \n-re és ez jelenik meg a bufferben...
 */
 int UART_Read(int huart, char *buffer, size_t size, char termination, int timeout_ms)
 {
