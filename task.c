@@ -18,8 +18,14 @@ char UartRxBuffer[UART_BUFFER_SIZE];
 char UartTxBuffer[UART_BUFFER_SIZE];
 char UartName[50];
 char LogMsg[LOG_MSG_SIZE];
-int cmdIndex;
+int stateIndex;
 
+enum State_e
+{
+  ST_OPC_QUERY,
+  ST_REQ_OFF_QUERY,
+  ST_WAIT_FOR_SHUTDOWN
+};
 
 char* trim(char* str) {
     char* end;
@@ -48,7 +54,8 @@ int Task_Init(void)
   timestamp = HAL_GetTick();
   downcounter = 5;
   huart = UART_Open(UartName, B115200 /*B9600*/);
-  cmdIndex = 0;
+
+  stateIndex = ST_OPC_QUERY;
 
   if(huart == -1)
   {
@@ -69,49 +76,62 @@ int Task_Run(void)
   if(HAL_GetTick() -  timestamp > 1000 )
   {
     timestamp = HAL_GetTick();
-    //syslog(LOG_DEBUG, "%s Running until: %ds", SERVICE_NAME, downcounter++);
-
-
-    switch(cmdIndex)
+ 
+    switch(stateIndex)
     {
-      case 0:
+      case ST_OPC_QUERY:
       {
         
         strcpy(UartTxBuffer, "*OPC?\n");
         UART_Write(huart, UartTxBuffer);
         UART_Read(huart, UartRxBuffer, sizeof(UartRxBuffer), '\n', 1000);
-        if(strcmp("*OPC\n", UartRxBuffer) == 0){
+        if(strcmp("*OPC\n", UartRxBuffer) == 0)
+        {
           syslog(LOG_DEBUG, "%s Req: %s -> Res: %s", SERVICE_NAME, trim(UartTxBuffer), trim(UartRxBuffer));
+          stateIndex = ST_REQ_OFF_QUERY;
         }
-        else {
+        else 
+        {
           syslog(LOG_ERR, "%s Req: %s Unknown Response: %s", SERVICE_NAME, trim(UartTxBuffer), trim(UartRxBuffer));
+          stateIndex = ST_OPC_QUERY;
         }
-
-        cmdIndex ++;
         break;
       }
 
-      case 1:
+      case ST_REQ_OFF_QUERY:
       {
         strcpy(UartTxBuffer, "RPI:REQ:OFF?\n");
         UART_Write(huart, UartTxBuffer);
         UART_Read(huart, UartRxBuffer, sizeof(UartRxBuffer), '\n', 1000);
-        if(strcmp("YES\n", UartRxBuffer) == 0){
+        if(strcmp("YES\n", UartRxBuffer) == 0)
+        {
           syslog(LOG_DEBUG, "%s Req: %s -> Res: %s", SERVICE_NAME, trim(UartTxBuffer), trim(UartRxBuffer));
+          system("systemctl poweroff");
+          stateIndex = ST_WAIT_FOR_SHUTDOWN;
         }
-        else if(strcmp("NO\n", UartRxBuffer) == 0){
+        else if(strcmp("NO\n", UartRxBuffer) == 0)
+        {
           syslog(LOG_DEBUG, "%s Req: %s -> Res: %s", SERVICE_NAME, trim(UartTxBuffer), trim(UartRxBuffer));
+          stateIndex = ST_OPC_QUERY;
         }
-        else {
+        else 
+        {
           syslog(LOG_ERR, "%s Req: %s -> Unknown Response: %s", SERVICE_NAME, trim(UartTxBuffer), trim(UartRxBuffer));
+          stateIndex = ST_OPC_QUERY;
         }
-        cmdIndex = 0;
+
+        break;
+      }
+
+      case ST_WAIT_FOR_SHUTDOWN: 
+      {
+        
         break;
       }
 
       default: 
       {
-        cmdIndex = 0;
+        stateIndex = ST_OPC_QUERY;
       }
     
     }
