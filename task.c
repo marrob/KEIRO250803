@@ -47,8 +47,8 @@ int Task_Run(void)
     timestamp = HAL_GetTick();
     syslog(LOG_INFO, "%s Running until: %ds", SERVICE_NAME, downcounter--);
 
-    UART_Write(huart, "*OPC?\n");
-    UART_Read(huart, UartRxBuffer, sizeof(UartRxBuffer), '\n', 1000);
+    UART_Write(huart, "*OPC?\r");
+    UART_Read(huart, UartRxBuffer, sizeof(UartRxBuffer), '\r', 1000);
     if(strcmp("*OPC\n", UartRxBuffer) == 0)
     {
       syslog(LOG_INFO, "%s Ok Response: %s", SERVICE_NAME, UartRxBuffer);

@@ -37,7 +37,7 @@
                 "tools.c",
                 "-static",
                 "-o",
-                "MRPI250610"
+                "KEIRO250803"
             ],
             "group": {
                 "kind": "build",

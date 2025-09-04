@@ -15,7 +15,7 @@
 // GPIO 14/15
 #define UART_NAME "/dev/serial0"
 
-#define SERVICE_NAME "MRPI250610"
+#define SERVICE_NAME "KEIRO250803"
 #define ERROR_CODE_COM_PORT_CANT_OPEN -2 
 
 #define LOG_PATH "log.txt"

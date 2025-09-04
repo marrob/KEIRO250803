@@ -3,15 +3,15 @@
 
 # --- Service Test ---
 # systemctl list-units --type=service --state=running
-# systemctl status MRPI250610.service 
+# systemctl status KEIRO250803.service 
 # pstree | grep mydaemon
 
 # --- Stop & Disable & Remove service ----
-# systemctl stop MRPI250610.service
-# systemctl disable MRPI250610.service
-# rm /etc/systemd/system/MRPI250610.service
-# rm /usr/local/bin/MRPI250610
-# systemctl restart MRPI250610.service 
+# systemctl stop KEIRO250803.service
+# systemctl disable KEIRO250803.service
+# rm /etc/systemd/system/KEIRO250803.service
+# rm /usr/local/bin/KEIRO250803
+# systemctl restart KEIRO250803.service 
 
 # --- RPI 4B az albbiak kikapcsoljk a consolt ---
 # systemctl stop serial-getty@ttyS0.service
@@ -24,13 +24,13 @@
 #
 # -f: real-time 
 # -u: filter 
-# journalctl -u MRPI250610 -f
-# journalctl -f | grep MRPI250610
+# journalctl -u KEIRO250803 -f
+# journalctl -f | grep KEIRO250803
 
 echo "Service Install Started..."
 
 # Bináris fájl neve (ne legyen elérési út!)
-BINARY_NAME="MRPI250610"
+BINARY_NAME="KEIRO250803"
 BINARY_SOURCE="./$BINARY_NAME"
 BINARY_TARGET="/usr/local/bin/$BINARY_NAME"
 SERVICE_FILE="/etc/systemd/system/$BINARY_NAME.service"
