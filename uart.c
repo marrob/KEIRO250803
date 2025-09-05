@@ -3,8 +3,9 @@
 #include <unistd.h>     // read, write, close
 #include <termios.h>    // termios, tcgetattr, tcsetattr
 #include <string.h>     // memset
-#include <sys/time.h> // struct timeval tv;
+#include <sys/time.h>   // struct timeval tv;
 #include <stdint.h>
+#include <syslog.h>
 
 // --- Soros portok listázása --- 
 // dmesg | grep tty
@@ -24,11 +25,14 @@
 // read() csak akkor tér vissza, ha a sor teljes, azaz záró karaktert (pl. Enter-\n) kapott.
 // portname:"/dev/ttyS0"
 // baudrate:B9600
+
 int UART_Open(const char *portname, speed_t baudrate)
 {
     int huart = open(portname, O_RDWR | O_NOCTTY | O_SYNC);
-    if (huart < 0) {
-        perror("Serial Port can't open");
+    if (huart < 0)
+    {
+        perror("UART_Open: Serial Port can't open");
+        syslog(LOG_ERR,"UART_Open: Serial Port cant'open. Port name: %s", portname);
         return -1;
     }
 
@@ -36,7 +40,9 @@ int UART_Open(const char *portname, speed_t baudrate)
     struct termios tty;
     memset(&tty, 0, sizeof tty);
 
-    if (tcgetattr(huart, &tty) != 0) {
+    if (tcgetattr(huart, &tty) != 0)
+    {
+        syslog(LOG_ERR,"UART_Open: tcgetattr error");
         perror("tcgetattr error");
         close(huart);
         return -1;
@@ -64,11 +70,15 @@ int UART_Open(const char *portname, speed_t baudrate)
     tty.c_cc[VMIN] = 0;      // minimum 0 karakter várakozás
     tty.c_cc[VTIME] = 1;     // 0.1sec resolution Timeout, csak non-canonical módban
 
-    if (tcsetattr(huart, TCSANOW, &tty) != 0) {
+    if (tcsetattr(huart, TCSANOW, &tty) != 0)
+    {
+        syslog(LOG_ERR,"UART_Open: tcsetattr errror");
         perror("tcsetattr error");
         close(huart);
         return -1;
     }
+
+    syslog(LOG_ERR, "UART_Open: Succesfully");
 
     return huart;
 }
@@ -77,8 +87,10 @@ int UART_Write(int huart, char *string)
 {
     int len = strlen(string);
     int wlen = write(huart, string, len);
-    if (wlen != len) {
-        perror("UART write error");
+    if (wlen != len)
+    {
+        perror("UART_Write: error wlen != len");
+	syslog(LOG_ERR,"UART_Write: error wlen != len");
         close(huart);
         return -1;
     }
@@ -102,7 +114,7 @@ int UART_Read(int huart, char *buffer, size_t size, char termination, int timeou
     char ch;
     size_t i = 0;
     long start = get_timestamp_ms();
-    
+
     while(1)
     {
         int rdlen = read(huart, &ch, 1);
@@ -110,23 +122,29 @@ int UART_Read(int huart, char *buffer, size_t size, char termination, int timeou
         {
             buffer[i]=ch;
             i++;
-            if(ch == termination){
+            if(ch == termination)
+            {
                 buffer[i] = '\0'; // close the string
                 return i;
             }
         }
-             
+
         if (i >= size - 1)
         {
             buffer[i] = '\0';
+            perror("UART_Read: Buffer overrun error.");
+            syslog(LOG_ERR,"UART_Read: Buffer overrun error.");
             return -2; // buffer overrun
         }
 
-        if(get_timestamp_ms() - start >  timeout_ms){
+        if(get_timestamp_ms() - start >  timeout_ms)
+        {
             buffer[i] = '\0'; // close the string
-            fprintf(stderr,"UART_Read timeout error.\n");
+            perror("UART_Read: Timeout error.");
+            syslog(LOG_ERR,"UART_Read: Timeout error.");
             return -3;
         }
+        syslog(LOG_DEBUG, "UART_Read: ts: %ld, start:%ld, ts-start:%ld", get_timestamp_ms(), start, get_timestamp_ms()-start);
     }
 }
 

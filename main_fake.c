@@ -12,7 +12,7 @@ int main(void)
 {
 
   openlog(SERVICE_NAME, LOG_PID | LOG_CONS, LOG_DAEMON);
-  syslog(LOG_INFO, "%s fake service debug started...", SERVICE_NAME);
+  syslog(LOG_INFO, "Fake service debug started...");
 
   if(Task_Init() == -1)
     keep_running = 0;
@@ -23,7 +23,7 @@ int main(void)
       break;
   }
 
-  syslog(LOG_INFO, "%s fake service stopped...", SERVICE_NAME);
+  syslog(LOG_INFO, "Fake service stopped...");
   closelog();
   Task_Close();
   

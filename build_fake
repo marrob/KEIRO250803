@@ -10,16 +10,16 @@ echo "gcc found: $(gcc --version | head -n 1)"
 
 # --- Compile sources ---
 gcc -g -O0 \
-    main_service.c \
+    main_fake.c \
     task.c \
     uart.c \
     tools.c \
     -static \
-    -o KEIRO250803
+    -o main_fake
 
 # --- Check build result ---
 if [ $? -eq 0 ]; then
-    echo "Build successful: ./KEIRO250803"
+    echo "Build successful: ./main_fake"
 else
     echo "Build failed."
     exit 1
