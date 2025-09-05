@@ -5,7 +5,7 @@
       "name": "Debug C program",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/main",
+      "program": "${workspaceFolder}/main_fake_service",
       "args": [],
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}",

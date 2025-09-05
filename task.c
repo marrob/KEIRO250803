@@ -3,8 +3,7 @@
 #include <string.h>     // strcmp
 #include <unistd.h>     // usleep()
 #include <syslog.h>
-
-#include <ctype.h> //isspace
+#include <stdlib.h>     // system()
 
 #include "uart.h"
 #include "main.h"
@@ -27,24 +26,7 @@ enum State_e
   ST_WAIT_FOR_SHUTDOWN
 };
 
-char* trim(char* str) {
-    char* end;
 
-    // Bal oldali szok�z�k kihagy�sa
-    while (isspace((unsigned char)*str)) str++;
-
-    if (*str == 0)  // Ha csak sz�k�z volt
-        return str;
-
-    // Jobb oldali sz�k�z�k elt�vol�t�sa
-    end = str + strlen(str) - 1;
-    while (end > str && isspace((unsigned char)*end)) end--;
-
-    // Null termin�tor elhelyez�se
-    *(end + 1) = '\0';
-
-    return str;
-}
 
 int Task_Init(void)
 {
@@ -70,13 +52,20 @@ int Task_Init(void)
 
 
 
-int Task_Run(void)
+int Task_Run(bool debug)
 {
 
   if(HAL_GetTick() -  timestamp > 1000 )
   {
     timestamp = HAL_GetTick();
- 
+
+    if(debug)
+    {
+      downcounter--;
+      if(downcounter < 0)
+        return 0;
+    }
+    
     switch(stateIndex)
     {
       case ST_OPC_QUERY:
@@ -106,6 +95,7 @@ int Task_Run(void)
         if(strcmp("YES\n", UartRxBuffer) == 0)
         {
           syslog(LOG_DEBUG, "%s Req: %s -> Res: %s", SERVICE_NAME, trim(UartTxBuffer), trim(UartRxBuffer));
+
           system("systemctl poweroff");
           stateIndex = ST_WAIT_FOR_SHUTDOWN;
         }
@@ -137,7 +127,7 @@ int Task_Run(void)
     }
   }
 
-  return downcounter;
+  return true;
 }
 
 

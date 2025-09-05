@@ -8,13 +8,13 @@
             "args": [
                 "-g",
                 "-O0",
-                "main.c",
-        		"task.c",
+                "main_fake_service.c",
+      		"task.c",
                 "uart.c",
                 "tools.c",
                 "-static",
                 "-o",
-                "main"
+                "main_fake_service"
             ],
             "group": {
                 "kind": "build",

@@ -2,7 +2,7 @@
 #define  __MAIN_H
 
 #define UART_BUFFER_SIZE 128
-
+#include <stdbool.h>
 
 // --- Rasberry Pi 4 Model B ---
 // serial0 = ttyAMA1
@@ -22,7 +22,7 @@
 #define LOG_MSG_SIZE 128
 
 int Task_Init(void);
-int Task_Run(void);
+int Task_Run(bool debug);
 void Task_Close(void);
 
 #endif

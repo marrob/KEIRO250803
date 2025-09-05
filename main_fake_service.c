@@ -1,6 +1,7 @@
 
 #include "main.h"
 #include <syslog.h>
+#include <stdbool.h>
 
 // így theted írásvédetté: chmod 444 .vscode/tasks.json, hogy a VSCode ne basztassa
 
@@ -18,7 +19,7 @@ int main(void)
 
   while (keep_running)
   {
-    if(Task_Run() == 0)
+    if(Task_Run(true) == 0)
       break;
   }
 

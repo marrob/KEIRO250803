@@ -63,7 +63,7 @@ int main() {
         //syslog(LOG_INFO, "mydaemon fut, az aktuális idő: %ld", (long)time(NULL));
         //sleep(5); // A démon 5 másodpercenként dolgozik/naplóz
 
-        if(Task_Run() == 0)
+        if(Task_Run(false) == 0)
             break;
     }
 
