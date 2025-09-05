@@ -28,7 +28,7 @@
 
 int UART_Open(const char *portname, speed_t baudrate)
 {
-    int huart = open(portname, O_RDWR | O_NOCTTY | O_SYNC);
+    int huart = open(portname, O_RDWR | O_NOCTTY | O_SYNC | O_NONBLOCK);
     if (huart < 0)
     {
         perror("UART_Open: Serial Port can't open");
@@ -117,6 +117,7 @@ int UART_Read(int huart, char *buffer, size_t size, char termination, int timeou
 
     while(1)
     {
+        //Nonblockin
         int rdlen = read(huart, &ch, 1);
         if(rdlen > 0)
         {
