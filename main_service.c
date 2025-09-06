@@ -7,6 +7,7 @@
 #include <fcntl.h>
 #include <syslog.h>
 #include <signal.h> // Hozzáadva a jelkezeléshez
+#include <string.h> //strcmp
 #include "main.h"
 
 
@@ -22,7 +23,14 @@ void sigterm_handler(int signum)
 }
 
 
-int main() {
+int main(int argc, char *argv[]) 
+{
+    if (argc > 1 && strcmp(argv[1], "--version") == 0)
+    {
+        printf("%s version %s\n", "KEIRO250803", APP_VERSION);
+        return 0;
+    }
+
     pid_t pid = fork(); //Elengedi a szülőfolyamatot, így a démon a háttérbe kerül.
 
     if (pid < 0) exit(EXIT_FAILURE); // hiba

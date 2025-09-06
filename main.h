@@ -4,6 +4,7 @@
 #define UART_BUFFER_SIZE 128
 #include <stdbool.h>
 
+
 // --- Rasberry Pi 4 Model B ---
 // serial0 = ttyAMA1
 // Ez van kivezetve a GPIO 14 (TX) es GPIO 15 (RX) labakra
@@ -16,6 +17,7 @@
 #define UART_NAME "/dev/serial0"
 
 #define SERVICE_NAME "KEIRO250803"
+#define APP_VERSION "250906_1528"
 #define ERROR_CODE_COM_PORT_CANT_OPEN -2 
 
 #define LOG_PATH "log.txt"
