@@ -78,7 +78,7 @@ int UART_Open(const char *portname, speed_t baudrate)
         return -1;
     }
 
-    syslog(LOG_ERR, "UART_Open: Succesfully");
+    syslog(LOG_DEBUG, "UART_Open: Succesfully");
 
     return huart;
 }
@@ -117,7 +117,6 @@ int UART_Read(int huart, char *buffer, size_t size, char termination, int timeou
 
     while(1)
     {
-        //Nonblockin
         int rdlen = read(huart, &ch, 1);
         if(rdlen > 0)
         {
@@ -145,7 +144,7 @@ int UART_Read(int huart, char *buffer, size_t size, char termination, int timeou
             syslog(LOG_ERR,"UART_Read: Timeout error.");
             return -3;
         }
-        syslog(LOG_DEBUG, "UART_Read: ts: %ld, start:%ld, ts-start:%ld", get_timestamp_ms(), start, get_timestamp_ms()-start);
+       // syslog(LOG_DEBUG, "UART_Read: ts: %ld, start:%ld, ts-start:%ld", get_timestamp_ms(), start, get_timestamp_ms()-start);
     }
 }
 
